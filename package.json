@@ -1,0 +1,53 @@
+{
+  "name": "fiberlauncher",
+  "version": "1.8.0",
+  "productName": "Fiber Launcher",
+  "description": "Modded Minecraft Launcher",
+  "author": "Daniel Scalzi (https://github.com/dscalzi/, modified by reis)",
+  "license": "UNLICENSED",
+  "homepage": "https://github.com/reisxd/FiberLauncher",
+  "bugs": {
+    "url": "https://github.com/reisxd/FiberLauncher/issues"
+  },
+  "private": true,
+  "main": "index.js",
+  "scripts": {
+    "start": "electron .",
+    "cilinux": "node build.js WINDOWS && node build.js LINUX",
+    "cidarwin": "node build.js MAC",
+    "dist": "cross-env ELECTRON_BUILDER_ALLOW_UNRESOLVED_DEPENDENCIES=true node build.js",
+    "dist:win": "npm run dist -- WINDOWS",
+    "dist:mac": "npm run dist -- MAC",
+    "dist:linux": "npm run dist -- LINUX",
+    "lint": "eslint --config .eslintrc.json ."
+  },
+  "engines": {
+    "node": "14.x.x"
+  },
+  "dependencies": {
+    "@electron/remote": "^1.0.4",
+    "adm-zip": "^0.5.3",
+    "async": "^3.2.0",
+    "discord-rpc": "^3.2.0",
+    "ejs": "^3.1.6",
+    "ejs-electron": "^2.1.1",
+    "electron-updater": "^4.3.8",
+    "fs-extra": "^9.1.0",
+    "github-syntax-dark": "^0.5.0",
+    "jquery": "^3.6.0",
+    "request": "^2.88.2",
+    "semver": "^7.3.4",
+    "tar-fs": "^2.1.1",
+    "winreg": "^1.2.4"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3",
+    "electron": "^12.0.0",
+    "electron-builder": "^22.10.5",
+    "eslint": "^7.21.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/reisxd/FiberLauncher.git"
+  }
+}
