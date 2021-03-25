@@ -29,10 +29,12 @@ builder.build({
         win: {
             target: [
                 {
-                    target: 'nsis',
+                    target: 'msi',
                     arch: 'x64'
-                }
-            ]
+                }],
+                    
+                 
+            
         },
         nsis: {
             oneClick: false,
