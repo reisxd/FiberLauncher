@@ -144,14 +144,14 @@ function updateSelectedServer(serv){
     }
     ConfigManager.setSelectedServer(serv != null ? serv.getID() : null)
     ConfigManager.save()
-    server_selection_button.innerHTML = '\u2022 ' + (serv != null ? serv.getName() : 'No Server Selected')
+    server_selection_button.innerHTML = '\u2022 ' + (serv != null ? serv.getName() : 'Sunucu Seçilmemiş')
     if(getCurrentView() === VIEWS.settings){
         animateModsTabRefresh()
     }
     setLaunchEnabled(serv != null)
 }
 // Real text is set in uibinder.js on distributionIndexDone.
-server_selection_button.innerHTML = '\u2022 Loading..'
+server_selection_button.innerHTML = '\u2022 Yükleniyor..'
 server_selection_button.onclick = (e) => {
     e.target.blur()
     toggleServerSelection(true)
@@ -322,10 +322,10 @@ function asyncSystemScan(mcVersion, launchAfter = true){
                 // If the result is null, no valid Java installation was found.
                 // Show this information to the user.
                 setOverlayContent(
-                    'No Compatible<br>Java Installation Found',
-                    'In order to join WesterosCraft, you need a 64-bit installation of Java 8. Would you like us to install a copy? By installing, you accept <a href="http://www.oracle.com/technetwork/java/javase/terms/license/index.html">Oracle\'s license agreement</a>.',
-                    'Install Java',
-                    'Install Manually'
+                    'Uyumlu <br> Java Yüklemesi Bulunamadı',
+                    'FiberCrafta katılmak için 64 bit Java 8 yüklemesine ihtiyacınız var. Bir kopyasını yüklememizi ister misiniz? Yükleyerek <a href="http://www.oracle.com/technetwork/java/javase/terms/license/index.html"> Oracle\'ın lisans sözleşmesini </a> kabul etmiş olursunuz.',
+                    'Java Yükle',
+                    'Manuel olarak Yükle'
                 )
                 setOverlayHandler(() => {
                     setLaunchDetails('Java İndirmeye Hazırlanıyor..')
@@ -337,10 +337,10 @@ function asyncSystemScan(mcVersion, launchAfter = true){
                     $('#overlayContent').fadeOut(250, () => {
                         //$('#overlayDismiss').toggle(false)
                         setOverlayContent(
-                            'Java is Required<br>to Launch',
-                            'A valid x64 installation of Java 8 is required to launch.<br><br>Please refer to our <a href="https://github.com/dscalzi/HeliosLauncher/wiki/Java-Management#manually-installing-a-valid-version-of-java">Java Management Guide</a> for instructions on how to manually install Java.',
-                            'I Understand',
-                            'Go Back'
+                            'Başlamak için <br> Java Gerekiyor',
+                            'Başlatmak için Java 8in geçerli bir x64 yüklemesi gereklidir. <br> <br> Lütfen <a href="https://github.com/dscalzi/HeliosLauncher/wiki/Java-Management#manually-installing-a sayfamıza bakın. Javanın manuel olarak nasıl yükleneceğine ilişkin talimatlar için -valid-version-of-java "> Java Yönetim Kılavuzu </a>.',
+                            'Anlıyorum',
+                            'Geri git'
                         )
                         setOverlayHandler(() => {
                             toggleLaunchArea(false)
@@ -383,9 +383,9 @@ function asyncSystemScan(mcVersion, launchAfter = true){
                 // Oracle JRE enqueue failed. Probably due to a change in their website format.
                 // User will have to follow the guide to install Java.
                 setOverlayContent(
-                    'Unexpected Issue:<br>Java Download Failed',
-                    'Unfortunately we\'ve encountered an issue while attempting to install Java. You will need to manually install a copy. Please check out our <a href="https://github.com/dscalzi/HeliosLauncher/wiki">Troubleshooting Guide</a> for more details and instructions.',
-                    'I Understand'
+                    'Beklenmeyen Sorun: <br> Java Yüklemesi Başarısız Oldu',
+                     'Maalesef Java yüklemeye çalışırken bir sorunla karşılaştık. Bir kopyasını manuel olarak yüklemeniz gerekecek. Daha fazla ayrıntı ve talimat için lütfen <a href="https://github.com/dscalzi/HeliosLauncher/wiki"> Sorun Giderme Kılavuzumuza </a> göz atın. ',
+                     'Anlıyorum'
                 )
                 setOverlayHandler(() => {
                     toggleOverlay(false)
@@ -520,12 +520,12 @@ function dlAsync(login = true){
     })
     aEx.on('error', (err) => {
         loggerLaunchSuite.error('Error during launch', err)
-        showLaunchFailure('Error During Launch', err.message || 'See console (CTRL + Shift + i) for more details.')
+        showLaunchFailure('Başlatma Sırasında Hata ', err.message || 'Daha fazla ayrıntı için konsola bakın (CTRL + Shift + i).')
     })
     aEx.on('close', (code, signal) => {
         if(code !== 0){
             loggerLaunchSuite.error(`AssetExec exited with code ${code}, assuming error.`)
-            showLaunchFailure('Error During Launch', 'See console (CTRL + Shift + i) for more details.')
+            showLaunchFailure('Başlatma Sırasında Hata', 'Daha fazla ayrıntı için konsola (CTRL + Shift + i) bakın.')
         }
     })
 
@@ -575,7 +575,7 @@ function dlAsync(login = true){
                     remote.getCurrentWindow().setProgressBar(2)
 
                     // Download done, extracting.
-                    const eLStr = 'Extracting libraries'
+                    const eLStr = 'Kitaplıklar çıkarılıyor'
                     let dotStr = ''
                     setLaunchDetails(eLStr)
                     progressListener = setInterval(() => {
@@ -599,7 +599,7 @@ function dlAsync(login = true){
                         progressListener = null
                     }
 
-                    setLaunchDetails('Preparing to launch..')
+                    setLaunchDetails('Başlatmaya hazırlanıyor..')
                     break
             }
         } else if(m.context === 'error'){
@@ -609,13 +609,13 @@ function dlAsync(login = true){
                     
                     if(m.error.code === 'ENOENT'){
                         showLaunchFailure(
-                            'Download Error',
-                            'Could not connect to the file server. Ensure that you are connected to the internet and try again.'
+                            'İndirme hatası',
+                            'Dosya sunucusuna bağlanılamadı. İnternete bağlı olduğunuzdan emin olun ve tekrar deneyin. '
                         )
                     } else {
                         showLaunchFailure(
-                            'Download Error',
-                            'Check the console (CTRL + Shift + i) for more details. Please try again.'
+                            'İndirme hatası',
+                            'Daha fazla ayrıntı için konsolu (CTRL + Shift + i) kontrol edin. Lütfen tekrar deneyin.'
                         )
                     }
 
@@ -634,7 +634,7 @@ function dlAsync(login = true){
                 loggerLaunchSuite.error('Error during validation:', m.result)
 
                 loggerLaunchSuite.error('Error during launch', m.result.error)
-                showLaunchFailure('Error During Launch', 'Please check the console (CTRL + Shift + i) for more details.')
+                showLaunchFailure('Başlatma Sırasında Hata', 'Daha fazla ayrıntı için lütfen konsolu (CTRL + Shift + i) kontrol edin.')
 
                 allGood = false
             }
@@ -691,7 +691,7 @@ function dlAsync(login = true){
                     data = data.trim()
                     if(data.indexOf('Could not find or load main class net.minecraft.launchwrapper.Launch') > -1){
                         loggerLaunchSuite.error('Game launch failed, LaunchWrapper was not downloaded properly.')
-                        showLaunchFailure('Error During Launch', 'The main file, LaunchWrapper, failed to download properly. As a result, the game cannot launch.<br><br>To fix this issue, temporarily turn off your antivirus software and launch the game again.<br><br>If you have time, please <a href="https://github.com/dscalzi/HeliosLauncher/issues">submit an issue</a> and let us know what antivirus software you use. We\'ll contact them and try to straighten things out.')
+                        showLaunchFailure('Başlatma Sırasında Hata', 'Ana dosya olan LaunchWrapper düzgün bir şekilde indirilemedi. Sonuç olarak oyun başlatılamıyor. <br> <br> Bu sorunu gidermek için, virüsten koruma yazılımınızı geçici olarak kapatın ve oyunu yeniden başlatın. <br> <br> Vaktiniz varsa lütfen <a href="https://github.com/dscalzi/HeliosLauncher/issues"> bir sorun gönderin </a> ve hangi virüsten koruma yazılımını kullandığınızı bize bildirin. Onlarla iletişim kuracağız ve işleri düzeltmeye çalışacağız.')
                     }
                 }
 
@@ -721,7 +721,7 @@ function dlAsync(login = true){
                 } catch(err) {
 
                     loggerLaunchSuite.error('Error during launch', err)
-                    showLaunchFailure('Error During Launch', 'Please check the console (CTRL + Shift + i) for more details.')
+                    showLaunchFailure('Başlatma Sırasında Hata', 'Daha fazla ayrıntı için lütfen konsolu (CTRL + Shift + i) kontrol edin.')
 
                 }
             }
@@ -750,7 +750,7 @@ function dlAsync(login = true){
         }, (err) => {
             loggerLaunchSuite.error('Unable to refresh distribution index.', err)
             if(DistroManager.getDistribution() == null){
-                showLaunchFailure('Fatal Error', 'Could not load a copy of the distribution index. See the console (CTRL + Shift + i) for more details.')
+                showLaunchFailure('Önemli Hata', 'Dağıtım dizininin bir kopyası yüklenemedi. Daha fazla ayrıntı için konsola bakın (CTRL + Shift + i). ')
 
                 // Disconnect from AssetExec
                 aEx.disconnect()
@@ -862,7 +862,7 @@ let newsLoadingListener = null
  */
 function setNewsLoading(val){
     if(val){
-        const nLStr = 'Checking for News'
+        const nLStr = 'Haberler Kontrol Ediliyor'
         let dotStr = '..'
         nELoadSpan.innerHTML = nLStr + dotStr
         newsLoadingListener = setInterval(() => {
