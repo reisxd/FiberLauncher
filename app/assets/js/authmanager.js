@@ -45,6 +45,15 @@ exports.addAccount = async function(username, password){
     }
 }
 
+exports.registerAccount = async function(username, password){
+    try {
+        await Mojang.register(username, password, ConfigManager.getClientToken())
+        
+    } catch (err){
+        return Promise.reject(err)
+    }
+}
+
 /**
  * Remove an account. This will invalidate the access token associated
  * with the account and then remove it from the database.

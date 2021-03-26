@@ -30,7 +30,10 @@ builder.build({
             target: [
                 {
                     target: 'msi',
-                    arch: 'x64'
+                    arch: [
+                        "x64",
+                      //  "ia32"
+                      ]
                 }],
                     
                  

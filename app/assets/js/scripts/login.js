@@ -254,6 +254,9 @@ loginCancelButton.onclick = (e) => {
 // Disable default form behavior.
 loginForm.onsubmit = () => { return false }
 
+document.getElementById('loginRegisterBtn').addEventListener('click', e => {
+    switchView(VIEWS.login, VIEWS.register)
+})
 // Bind login button behavior.
 loginButton.addEventListener('click', () => {
     // Disable form.

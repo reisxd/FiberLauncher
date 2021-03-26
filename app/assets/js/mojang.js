@@ -164,6 +164,39 @@ exports.authenticate = function(username, password, clientToken, requestUser = t
     })
 }
 
+exports.register = function(username, password, clientToken, requestUser = true, agent = minecraftAgent){
+    return new Promise((resolve, reject) => {
+
+        const body = {
+            agent,
+            username,
+            password,
+            requestUser
+        }
+        if(clientToken != null){
+            body.clientToken = clientToken
+        }
+
+        request.post(authpath + '/register',
+            {
+                json: true,
+                body
+            },
+            function(error, response, body){
+                if(error){
+                    logger.error('Error during authentication.', error)
+                    reject(error)
+                } else {
+                    if(response.statusCode === 200){
+                        resolve(body)
+                    } else {
+                        reject(body || {code: 'ENOTFOUND'})
+                    }
+                }
+            })
+    })
+}
+
 /**
  * Validate an access token. This should always be done before launching.
  * The client token should match the one used to create the access token.
