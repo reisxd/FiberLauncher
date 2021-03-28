@@ -105,6 +105,10 @@ document.getElementById('launch_button').addEventListener('click', function(e){
                 asyncSystemScan(mcVersion)
             }
         })
+        setTimeout(function(){        jg._validateJavaBinary(jExe).then((v) => {
+            loggerLanding.log('Java version meta', v)
+        })}, 5000)
+
     }
 })
 
@@ -220,14 +224,14 @@ const refreshServerStatus = async function(fade = false){
     loggerLanding.log('Refreshing Server Status')
     const serv = DistroManager.getDistribution().getServer(ConfigManager.getSelectedServer())
 
-    let pLabel = 'SERVER'
-    let pVal = 'OFFLINE'
+    let pLabel = 'SUNUCU'
+    let pVal = 'KAPALI'
 
     try {
         const serverURL = new URL('my://' + serv.getAddress())
         const servStat = await ServerStatus.getStatus(serverURL.hostname, serverURL.port)
         if(servStat.online){
-            pLabel = 'PLAYERS'
+            pLabel = 'OYUNCULAR'
             pVal = servStat.onlinePlayers + '/' + servStat.maxPlayers
         }
 
@@ -477,17 +481,16 @@ let forgeData
 
 let progressListener
 
-function dlAsync(login = true){
+function dlAsync(){
 
     // Login parameter is temporary for debug purposes. Allows testing the validation/downloads without
     // launching the game.
 
-    if(login) {
+
         if(ConfigManager.getSelectedAccount() == null){
-            loggerLanding.error('You must be logged into an account.')
-            return
+         return loggerLanding.error('You must be logged into an account.')
         }
-    }
+
 
     setLaunchDetails('Lütfen bekleyin..')
     toggleLaunchArea(true)
@@ -642,7 +645,7 @@ function dlAsync(login = true){
             forgeData = m.result.forgeData
             versionData = m.result.versionData
 
-            if(login && allGood) {
+            if(allGood) {
                 const authUser = ConfigManager.getSelectedAccount()
                 loggerLaunchSuite.log(`Sending selected account (${authUser.displayName}) to ProcessBuilder.`)
                 let pb = new ProcessBuilder(serv, versionData, forgeData, authUser, remote.app.getVersion())

@@ -213,7 +213,10 @@ class Util {
     }
 
 }
-
+function populateJavaExecDetails(execPath){
+    const jg = new JavaGuard(DistroManager.getDistribution().getServer(ConfigManager.getSelectedServer()).getMinecraftVersion())
+    jg._validateJavaBinary(execPath)
+}
 
 class JavaGuard extends EventEmitter {
 
@@ -546,16 +549,18 @@ class JavaGuard extends EventEmitter {
                 console.log(typeof binaryExecPath)
                 if(binaryExecPath.indexOf('javaw.exe') > -1) {
                     binaryExecPath.replace('javaw.exe', 'java.exe')
+                    console.log('Replaced java.')
+                    child_process.exec('"' + binaryExecPath + '" -XshowSettings:properties', (err, stdout, stderr) => {
+                        try {
+                            // Output is stored in stderr?
+                            resolve(this._validateJVMProperties(stderr))
+                            console.log('Validating JVM Props.')
+                        } catch (err){
+                            // Output format might have changed, validation cannot be completed.
+                            resolve({valid: false})
+                        }
+                    })
                 }
-                child_process.exec('"' + binaryExecPath + '" -XshowSettings:properties', (err, stdout, stderr) => {
-                    try {
-                        // Output is stored in stderr?
-                        resolve(this._validateJVMProperties(stderr))
-                    } catch (err){
-                        // Output format might have changed, validation cannot be completed.
-                        resolve({valid: false})
-                    }
-                })
             } else {
                 resolve({valid: false})
             }
@@ -745,7 +750,7 @@ class JavaGuard extends EventEmitter {
         for(let i=0; i<rootArr.length; i++){
 
             const execPath = JavaGuard.javaExecFromRoot(rootArr[i])
-            const metaOb = await this._validateJavaBinary(execPath)
+            const metaOb = await populateJavaExecDetails();
 
             if(metaOb.valid){
                 metaOb.execPath = execPath
@@ -757,6 +762,8 @@ class JavaGuard extends EventEmitter {
         return validArr
 
     }
+
+    
 
     /**
      * Sort an array of JVM meta objects. Best candidates are placed before all others.
